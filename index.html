@@ -6,28 +6,31 @@
   <title>Anshu Yadav | Codevia</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    
-    body { 
-      font-family: 'Inter', system-ui, sans-serif; 
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
     }
-    
+
     .hero-bg {
       background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
     }
-    
+
     .glass {
-      background: rgba(255,255,255,0.05);
+      background: rgba(10,10,10,0.85);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-    
+
     .project-card {
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     .project-card:hover {
-      transform: translateY(-12px) scale(1.02);
+      transform: translateY(-8px) scale(1.02);
       box-shadow: 0 25px 50px -12px rgb(16 185 129 / 0.25);
     }
 
@@ -38,14 +41,14 @@
 
     .work-card:hover {
       border-left-color: #10b981;
-      transform: translateX(6px);
+      transform: translateX(4px);
     }
-    
+
     .nav-link {
       position: relative;
     }
-    
-    .nav-link:after {
+
+    .nav-link::after {
       content: '';
       position: absolute;
       width: 0;
@@ -55,28 +58,46 @@
       background-color: #10b981;
       transition: width 0.3s ease;
     }
-    
-    .nav-link:hover:after {
-      width: 100%;
-    }
-    
-    .typing {
+
+    .nav-link:hover::after { width: 100%; }
+
+    /* ---- Typing animation: capped width so it never overflows ---- */
+    .typing-wrap {
+      display: inline-block;
+      max-width: 100%;
       overflow: hidden;
-      white-space: nowrap;
-      border-right: 3px solid #10b981;
-      animation: typing 3.5s steps(40, end) forwards, blink-caret 0.75s step-end infinite;
     }
-    
+
+    .typing {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid #10b981;
+      animation: typing 3.5s steps(40, end) forwards,
+                 blink-caret 0.75s step-end infinite;
+      max-width: 100%;
+    }
+
     @keyframes typing {
       from { width: 0 }
-      to { width: 100% }
+      to   { width: 100% }
     }
-    
+
     @keyframes blink-caret {
       from, to { border-color: transparent }
-      50% { border-color: #10b981 }
+      50%      { border-color: #10b981 }
     }
-    
+
+    /* On small screens, let it wrap instead of animate */
+    @media (max-width: 640px) {
+      .typing {
+        white-space: normal;
+        border-right: none;
+        animation: none;
+        width: auto !important;
+      }
+    }
+
     .scroll-progress {
       position: fixed;
       top: 0;
@@ -84,6 +105,7 @@
       height: 3px;
       background: linear-gradient(to right, #10b981, #34d399);
       z-index: 9999;
+      transition: width 0.1s linear;
     }
 
     .timeline-dot {
@@ -93,154 +115,206 @@
       background: #10b981;
       border: 3px solid #18181b;
       flex-shrink: 0;
-      margin-top: 5px;
+      margin-top: 6px;
     }
 
     .timeline-line {
       width: 2px;
       background: linear-gradient(to bottom, #10b981, #065f46);
       margin: 4px 0 4px 6px;
-      min-height: 40px;
+      min-height: 32px;
     }
+
+    /* Mobile nav drawer */
+    #mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      background: #0f0f0f;
+      border-top: 1px solid #27272a;
+    }
+
+    #mobile-menu.open { display: flex; }
+
+    #mobile-menu a {
+      padding: 14px 24px;
+      font-size: 15px;
+      font-weight: 500;
+      border-bottom: 1px solid #27272a;
+      color: #d4d4d8;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    #mobile-menu a:hover {
+      color: #10b981;
+      background: #18181b;
+    }
+
+    /* Hamburger icon lines */
+    .burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .burger.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .burger.active span:nth-child(2) { opacity: 0; }
+    .burger.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
   </style>
 </head>
 <body class="bg-zinc-950 text-white overflow-x-hidden">
+
   <!-- Progress Bar -->
   <div id="progress-bar" class="scroll-progress w-0"></div>
 
-  <!-- Navbar -->
+  <!-- ===== NAVBAR ===== -->
   <nav class="fixed top-0 w-full z-50 glass border-b border-zinc-800">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <span class="text-3xl font-bold tracking-tighter">Anshu Yadav</span>
-        <span class="px-4 py-1 text-xs font-semibold bg-emerald-500 text-black rounded-full">Codevia</span>
+    <div class="max-w-7xl mx-auto px-5 py-4 flex justify-between items-center">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <span class="text-xl sm:text-2xl font-bold tracking-tighter">Anshu Yadav</span>
+        <span class="px-3 py-0.5 text-xs font-semibold bg-emerald-500 text-black rounded-full">Codevia</span>
       </div>
-      
-      <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-        <a href="#about" class="nav-link hover:text-emerald-400 transition">About</a>
-        <a href="#work" class="nav-link hover:text-emerald-400 transition">Work</a>
+
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-7 text-sm font-medium">
+        <a href="#about"    class="nav-link hover:text-emerald-400 transition">About</a>
+        <a href="#work"     class="nav-link hover:text-emerald-400 transition">Work</a>
         <a href="#projects" class="nav-link hover:text-emerald-400 transition">Projects</a>
-        <a href="#skills" class="nav-link hover:text-emerald-400 transition">Skills</a>
-        <a href="#contact" class="nav-link hover:text-emerald-400 transition">Contact</a>
+        <a href="#skills"   class="nav-link hover:text-emerald-400 transition">Skills</a>
+        <a href="#contact"  class="nav-link hover:text-emerald-400 transition">Contact</a>
       </div>
-      
-      <div class="flex items-center gap-4">
-        <button onclick="toggleTheme()" class="text-2xl hover:scale-110 transition">☀️</button>
-        <a href="https://instagram.com/anshyadav_skp" target="_blank" class="text-2xl hover:text-emerald-400 transition">
+
+      <!-- Right icons + hamburger -->
+      <div class="flex items-center gap-3">
+        <a href="https://instagram.com/anshyadav_skp" target="_blank"
+           class="text-xl hover:text-emerald-400 transition hidden sm:block">
           <i class="fab fa-instagram"></i>
         </a>
+        <!-- Hamburger (mobile only) -->
+        <button id="burger-btn" class="burger md:hidden flex flex-col gap-[5px] p-1" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
       </div>
+    </div>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu">
+      <a href="#about"    onclick="closeMobile()">About</a>
+      <a href="#work"     onclick="closeMobile()">Work</a>
+      <a href="#projects" onclick="closeMobile()">Projects</a>
+      <a href="#skills"   onclick="closeMobile()">Skills</a>
+      <a href="#contact"  onclick="closeMobile()">Contact</a>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero-bg min-h-screen flex items-center pt-20">
-    <div class="max-w-5xl mx-auto px-6 text-center">
-      <div class="mb-6 inline-flex items-center gap-2 bg-zinc-900 border border-emerald-500/30 px-6 py-2 rounded-3xl text-sm">
-        <span class="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></span>
+  <!-- ===== HERO ===== -->
+  <section class="hero-bg min-h-screen flex items-center pt-24 pb-16">
+    <div class="max-w-5xl mx-auto px-5 text-center w-full">
+
+      <div class="mb-6 inline-flex items-center gap-2 bg-zinc-900 border border-emerald-500/30 px-5 py-2 rounded-3xl text-xs sm:text-sm">
+        <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></span>
         Available for freelance work
       </div>
-      
-      <h1 class="text-6xl md:text-7xl font-bold tracking-tighter mb-4">
+
+      <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter mb-4 leading-tight">
         Hi, I'm <span class="text-emerald-400">Anshu Yadav</span>
       </h1>
-      
-      <p class="text-emerald-400 text-2xl mb-6">Founder @ Codevia</p>
-      
-      <p id="tagline" class="typing text-3xl md:text-4xl text-zinc-400 font-light max-w-2xl mx-auto">
-        Crafting fast, beautiful, and meaningful digital experiences
-      </p>
-      
-      <div class="mt-12 flex flex-wrap gap-5 justify-center">
-        <a href="#projects" 
-           class="px-10 py-5 bg-emerald-500 hover:bg-emerald-600 text-black font-semibold rounded-2xl flex items-center gap-3 transition-all hover:scale-105">
-          View My Projects 
-          <i class="fas fa-arrow-right"></i>
+
+      <p class="text-emerald-400 text-lg sm:text-2xl mb-5">Founder @ Codevia</p>
+
+      <!-- Typing animation: wraps on mobile, animates on desktop -->
+      <div class="typing-wrap max-w-2xl mx-auto">
+        <span id="tagline" class="typing text-xl sm:text-2xl md:text-3xl text-zinc-400 font-light">
+          Crafting fast, beautiful, and meaningful digital experiences
+        </span>
+      </div>
+
+      <div class="mt-10 flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
+        <a href="#projects"
+           class="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-black font-semibold rounded-2xl flex items-center justify-center gap-3 transition-all hover:scale-105 text-base">
+          View My Projects <i class="fas fa-arrow-right"></i>
         </a>
-        <a href="#contact" 
-           class="px-10 py-5 border-2 border-zinc-700 hover:border-emerald-400 font-semibold rounded-2xl transition-all hover:scale-105">
+        <a href="#contact"
+           class="px-8 py-4 border-2 border-zinc-700 hover:border-emerald-400 font-semibold rounded-2xl transition-all hover:scale-105 text-base text-center">
           Let's Talk
         </a>
       </div>
-      
-      <div class="mt-20 flex justify-center gap-10 text-3xl">
+
+      <div class="mt-14 flex justify-center gap-8 text-2xl">
         <a href="https://github.com/anshh_1014" target="_blank" class="hover:text-emerald-400 transition"><i class="fab fa-github"></i></a>
         <a href="https://linkedin.com/in/yourprofile" target="_blank" class="hover:text-emerald-400 transition"><i class="fab fa-linkedin"></i></a>
-        <a href="https://instagram.com/anshyadav_skp" target="_blank" class="hover:text-emerald-400 transition"><i class="fab fa-instagram"></i></a>
+        <a href="https://instagram.com/anshyadav_skp"  target="_blank" class="hover:text-emerald-400 transition"><i class="fab fa-instagram"></i></a>
       </div>
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section id="about" class="py-24 bg-zinc-900">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-5xl font-bold mb-10 text-center">About Me</h2>
-      <div class="prose prose-invert text-lg leading-relaxed text-zinc-300 max-w-none">
-        <p class="mb-6">
-          I'm Anshu Yadav, founder of <span class="text-emerald-400 font-medium">Codevia</span>. 
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="py-20 bg-zinc-900">
+    <div class="max-w-4xl mx-auto px-5">
+      <h2 class="text-3xl sm:text-5xl font-bold mb-8 text-center">About Me</h2>
+      <div class="text-base sm:text-lg leading-relaxed text-zinc-300 space-y-4">
+        <p>
+          I'm Anshu Yadav, founder of <span class="text-emerald-400 font-medium">Codevia</span>.
           I specialize in building high-performance, beautiful web experiences using modern technologies.
         </p>
         <p>
-          From Kanpur, India, I love creating clean, fast, and user-friendly websites. 
+          From Kanpur, India, I love creating clean, fast, and user-friendly websites.
           Passionate about web development, performance optimization, and delivering delightful digital products.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- ===== WORK / EXPERIENCE SECTION ===== -->
-  <section id="work" class="py-24 bg-zinc-950">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-5xl font-bold mb-4 text-center">Work & Experience</h2>
-      <p class="text-center text-zinc-400 mb-16 text-lg">My journey so far</p>
-
-      <div id="work-container" class="space-y-4">
-        <!-- Filled by JavaScript -->
-      </div>
-    </div>
-  </section>
-  <!-- ===== END WORK SECTION ===== -->
-
-  <!-- PROJECTS -->
-  <section id="projects" class="py-24 bg-zinc-900">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-5xl font-bold mb-12 text-center">Featured Projects</h2>
-      
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-container">
-        <!-- Projects added by JavaScript -->
-      </div>
+  <!-- ===== WORK / EXPERIENCE ===== -->
+  <section id="work" class="py-20 bg-zinc-950">
+    <div class="max-w-4xl mx-auto px-5">
+      <h2 class="text-3xl sm:text-5xl font-bold mb-3 text-center">Work & Experience</h2>
+      <p class="text-center text-zinc-400 mb-12 text-base sm:text-lg">My journey so far</p>
+      <div id="work-container" class="space-y-4"></div>
     </div>
   </section>
 
-  <!-- SKILLS -->
-  <section id="skills" class="py-24 bg-zinc-950">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-5xl font-bold mb-12 text-center">Skills & Technologies</h2>
-      <div class="flex flex-wrap justify-center gap-4" id="skills-container">
-        <!-- Filled by JavaScript -->
-      </div>
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects" class="py-20 bg-zinc-900">
+    <div class="max-w-7xl mx-auto px-5">
+      <h2 class="text-3xl sm:text-5xl font-bold mb-10 text-center">Featured Projects</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-container"></div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="py-24 bg-emerald-950">
-    <div class="max-w-2xl mx-auto px-6 text-center">
-      <h2 class="text-5xl font-bold mb-6">Let's Work Together</h2>
-      <p class="text-xl text-emerald-200 mb-10">Have a project in mind? Feel free to reach out.</p>
-      
-      <a href="mailto:yadavanshu001g@gmail.com" 
-         class="inline-block px-12 py-6 bg-white text-black font-semibold text-xl rounded-3xl hover:bg-emerald-400 transition-all hover:scale-105">
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" class="py-20 bg-zinc-950">
+    <div class="max-w-5xl mx-auto px-5">
+      <h2 class="text-3xl sm:text-5xl font-bold mb-10 text-center">Skills & Technologies</h2>
+      <div class="flex flex-wrap justify-center gap-3" id="skills-container"></div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="py-20 bg-emerald-950">
+    <div class="max-w-2xl mx-auto px-5 text-center">
+      <h2 class="text-3xl sm:text-5xl font-bold mb-5">Let's Work Together</h2>
+      <p class="text-base sm:text-xl text-emerald-200 mb-10">Have a project in mind? Feel free to reach out.</p>
+
+      <a href="mailto:yadavanshu001g@gmail.com"
+         class="inline-block px-8 sm:px-12 py-4 sm:py-6 bg-white text-black font-semibold text-lg sm:text-xl rounded-3xl hover:bg-emerald-400 transition-all hover:scale-105">
         Send me an email →
       </a>
-      
-      <div class="mt-16 text-sm opacity-70">
+
+      <div class="mt-14 text-xs sm:text-sm opacity-70">
         © 2026 Anshu Yadav • Codevia • Built with HTML, CSS & JavaScript
       </div>
     </div>
   </section>
 
+  <!-- ===== SCRIPTS ===== -->
   <script>
-    // ===== WORK / EXPERIENCE DATA =====
+    /* ---------- DATA ---------- */
     const workExperience = [
       {
         role: "Founder & Lead Developer",
@@ -271,155 +345,122 @@
       }
     ];
 
-    // ===== PROJECTS DATA =====
     const projects = [
-      {
-        title: "Project Title 1",
-        desc: "Short description of what you built and the technologies used.",
-        emoji: "🚀"
-      },
-      {
-        title: "Project Title 2",
-        desc: "Another project description goes here.",
-        emoji: "📱"
-      },
-      {
-        title: "Project Title 3",
-        desc: "Tell visitors what problem this project solves.",
-        emoji: "💼"
-      }
+      { title: "Project Title 1", desc: "Short description of what you built and the technologies used.", emoji: "🚀" },
+      { title: "Project Title 2", desc: "Another project description goes here.", emoji: "📱" },
+      { title: "Project Title 3", desc: "Tell visitors what problem this project solves.", emoji: "💼" }
     ];
 
-    // ===== SKILLS DATA =====
     const skills = [
-      "HTML5", "CSS3", "JavaScript", "Tailwind CSS", 
-      "React", "Next.js", "TypeScript", "Git", 
-      "Responsive Design", "UI/UX", "Performance Optimization"
+      "HTML5","CSS3","JavaScript","Tailwind CSS",
+      "React","Next.js","TypeScript","Git",
+      "Responsive Design","UI/UX","Performance Optimization"
     ];
 
-    // ===== RENDER WORK SECTION =====
+    /* ---------- RENDER WORK ---------- */
     function renderWork() {
       const container = document.getElementById('work-container');
-      container.innerHTML = '';
-
       const typeColors = {
-        "Full-time": "bg-emerald-900 text-emerald-300",
-        "Freelance": "bg-blue-900 text-blue-300",
-        "Learning": "bg-zinc-800 text-zinc-300",
+        "Full-time":  "bg-emerald-900 text-emerald-300",
+        "Freelance":  "bg-blue-900 text-blue-300",
+        "Learning":   "bg-zinc-800 text-zinc-300",
         "Internship": "bg-purple-900 text-purple-300",
-        "Part-time": "bg-amber-900 text-amber-300"
+        "Part-time":  "bg-amber-900 text-amber-300"
       };
 
-      workExperience.forEach((job, index) => {
-        const isLast = index === workExperience.length - 1;
-        const colorClass = typeColors[job.type] || "bg-zinc-800 text-zinc-300";
-
-        const wrapper = document.createElement('div');
-        wrapper.className = 'flex gap-5';
-
-        wrapper.innerHTML = `
-          <!-- Timeline column -->
-          <div class="flex flex-col items-center" style="min-width:14px;">
+      workExperience.forEach((job, i) => {
+        const isLast = i === workExperience.length - 1;
+        const color  = typeColors[job.type] || "bg-zinc-800 text-zinc-300";
+        const wrap   = document.createElement('div');
+        wrap.className = 'flex gap-4';
+        wrap.innerHTML = `
+          <div class="flex flex-col items-center" style="min-width:14px">
             <div class="timeline-dot"></div>
             ${!isLast ? '<div class="timeline-line flex-1"></div>' : ''}
           </div>
-
-          <!-- Card -->
-          <div class="work-card flex-1 bg-zinc-900 border border-zinc-800 rounded-2xl p-6 mb-6 cursor-default">
-            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+          <div class="work-card flex-1 bg-zinc-900 border border-zinc-800 rounded-2xl p-5 mb-5 cursor-default">
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
               <div class="flex items-center gap-3">
-                <span class="text-2xl">${job.icon}</span>
+                <span class="text-xl">${job.icon}</span>
                 <div>
-                  <h3 class="text-xl font-semibold text-white">${job.role}</h3>
-                  <p class="text-emerald-400 font-medium text-sm">${job.company}</p>
+                  <h3 class="text-base sm:text-xl font-semibold text-white">${job.role}</h3>
+                  <p class="text-emerald-400 font-medium text-xs sm:text-sm">${job.company}</p>
                 </div>
               </div>
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-xs px-3 py-1 rounded-full ${colorClass} font-medium">${job.type}</span>
-                <span class="text-xs text-zinc-500 bg-zinc-800 px-3 py-1 rounded-full">${job.period}</span>
+                <span class="text-xs px-2 py-1 rounded-full ${color} font-medium">${job.type}</span>
+                <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">${job.period}</span>
               </div>
             </div>
-
-            <p class="text-zinc-400 text-sm leading-relaxed mb-4">${job.description}</p>
-
+            <p class="text-zinc-400 text-sm leading-relaxed mb-3">${job.description}</p>
             <div class="flex flex-wrap gap-2">
-              ${job.tags.map(tag => `
-                <span class="text-xs px-3 py-1 bg-zinc-800 hover:bg-emerald-900 hover:text-emerald-400 rounded-full transition-colors">${tag}</span>
-              `).join('')}
+              ${job.tags.map(t => `<span class="text-xs px-2 py-1 bg-zinc-800 hover:bg-emerald-900 hover:text-emerald-400 rounded-full transition-colors">${t}</span>`).join('')}
             </div>
-          </div>
-        `;
-
-        container.appendChild(wrapper);
+          </div>`;
+        container.appendChild(wrap);
       });
     }
 
-    // ===== RENDER PROJECTS =====
+    /* ---------- RENDER PROJECTS ---------- */
     function renderProjects() {
       const container = document.getElementById('projects-container');
-      container.innerHTML = '';
-      
-      projects.forEach(project => {
+      projects.forEach(p => {
         const card = document.createElement('div');
         card.className = 'project-card bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden cursor-pointer';
         card.innerHTML = `
-          <div class="h-64 flex items-center justify-center text-9xl bg-zinc-800">
-            ${project.emoji}
-          </div>
-          <div class="p-8">
-            <h3 class="text-2xl font-semibold mb-3">${project.title}</h3>
-            <p class="text-zinc-400">${project.desc}</p>
-          </div>
-        `;
+          <div class="h-48 sm:h-56 flex items-center justify-center text-7xl sm:text-9xl bg-zinc-800">${p.emoji}</div>
+          <div class="p-6 sm:p-8">
+            <h3 class="text-xl sm:text-2xl font-semibold mb-2">${p.title}</h3>
+            <p class="text-zinc-400 text-sm sm:text-base">${p.desc}</p>
+          </div>`;
         container.appendChild(card);
       });
     }
 
-    // ===== RENDER SKILLS =====
+    /* ---------- RENDER SKILLS ---------- */
     function renderSkills() {
       const container = document.getElementById('skills-container');
-      container.innerHTML = '';
-      
-      skills.forEach(skill => {
+      skills.forEach(s => {
         const pill = document.createElement('div');
-        pill.className = 'px-8 py-4 bg-zinc-800 hover:bg-emerald-900 hover:text-emerald-400 rounded-3xl text-lg font-medium transition-all';
-        pill.textContent = skill;
+        pill.className = 'px-5 py-3 bg-zinc-800 hover:bg-emerald-900 hover:text-emerald-400 rounded-3xl text-sm sm:text-base font-medium transition-all cursor-default';
+        pill.textContent = s;
         container.appendChild(pill);
       });
     }
 
-    // ===== SCROLL PROGRESS BAR =====
-    function updateProgressBar() {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      document.getElementById("progress-bar").style.width = scrolled + "%";
-    }
+    /* ---------- SCROLL PROGRESS ---------- */
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height    = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (winScroll / height * 100) + '%';
+    });
 
-    // ===== THEME TOGGLE =====
-    function toggleTheme() {
-      document.documentElement.classList.toggle('dark');
-    }
-
-    // ===== SMOOTH SCROLLING =====
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        if (this.getAttribute('href') !== '#') {
-          e.preventDefault();
-          document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-          });
-        }
+    /* ---------- SMOOTH SCROLL ---------- */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
       });
     });
 
-    // ===== INITIALIZE =====
-    window.onload = function() {
-      renderWork();
-      renderProjects();
-      renderSkills();
-      window.addEventListener('scroll', updateProgressBar);
-    };
+    /* ---------- HAMBURGER ---------- */
+    const burgerBtn  = document.getElementById('burger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    burgerBtn.addEventListener('click', () => {
+      burgerBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobile() {
+      burgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('open');
+    }
+
+    /* ---------- INIT ---------- */
+    renderWork();
+    renderProjects();
+    renderSkills();
   </script>
 </body>
 </html>
