@@ -61,7 +61,6 @@
 
     .nav-link:hover::after { width: 100%; }
 
-    /* ---- Typing animation: capped width so it never overflows ---- */
     .typing-wrap {
       display: inline-block;
       max-width: 100%;
@@ -88,7 +87,6 @@
       50%      { border-color: #10b981 }
     }
 
-    /* On small screens, let it wrap instead of animate */
     @media (max-width: 640px) {
       .typing {
         white-space: normal;
@@ -125,7 +123,6 @@
       min-height: 32px;
     }
 
-    /* Mobile nav drawer */
     #mobile-menu {
       display: none;
       flex-direction: column;
@@ -150,7 +147,6 @@
       background: #18181b;
     }
 
-    /* Hamburger icon lines */
     .burger span {
       display: block;
       width: 22px;
@@ -163,6 +159,170 @@
     .burger.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
     .burger.active span:nth-child(2) { opacity: 0; }
     .burger.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ===== CONTACT FORM STYLES ===== */
+    .contact-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 14px 18px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      outline: none;
+      resize: none;
+    }
+
+    .contact-input::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+
+    .contact-input:focus {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.06);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    }
+
+    .contact-input:hover:not(:focus) {
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .contact-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+
+    .contact-card:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.03);
+    }
+
+    .send-btn {
+      width: 100%;
+      padding: 15px 32px;
+      background: #10b981;
+      color: #000;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      letter-spacing: 0.01em;
+    }
+
+    .send-btn:hover:not(:disabled) {
+      background: #34d399;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.35);
+    }
+
+    .send-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .success-msg {
+      display: none;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 14px;
+      padding: 18px 24px;
+      color: #34d399;
+      font-weight: 500;
+      text-align: center;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .error-msg {
+      display: none;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 14px;
+      padding: 18px 24px;
+      color: #f87171;
+      font-weight: 500;
+      text-align: center;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(0,0,0,0.3);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .char-count {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      text-align: right;
+      margin-top: 6px;
+      transition: color 0.2s;
+    }
+
+    .char-count.near-limit { color: #f59e0b; }
+    .char-count.at-limit   { color: #ef4444; }
+
+    .input-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+    }
+
+    .contact-info-item:last-child { border-bottom: none; }
+
+    .contact-info-icon {
+      width: 38px;
+      height: 38px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #10b981;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body class="bg-zinc-950 text-white overflow-x-hidden">
@@ -173,14 +333,10 @@
   <!-- ===== NAVBAR ===== -->
   <nav class="fixed top-0 w-full z-50 glass border-b border-zinc-800">
     <div class="max-w-7xl mx-auto px-5 py-4 flex justify-between items-center">
-
-      <!-- Logo -->
       <div class="flex items-center gap-2">
         <span class="text-xl sm:text-2xl font-bold tracking-tighter">Anshu Yadav</span>
         <span class="px-3 py-0.5 text-xs font-semibold bg-emerald-500 text-black rounded-full">Codeviaa</span>
       </div>
-
-      <!-- Desktop links -->
       <div class="hidden md:flex items-center gap-7 text-sm font-medium">
         <a href="#about"    class="nav-link hover:text-emerald-400 transition">About</a>
         <a href="#work"     class="nav-link hover:text-emerald-400 transition">Work</a>
@@ -188,21 +344,16 @@
         <a href="#skills"   class="nav-link hover:text-emerald-400 transition">Skills</a>
         <a href="#contact"  class="nav-link hover:text-emerald-400 transition">Contact</a>
       </div>
-
-      <!-- Right icons + hamburger -->
       <div class="flex items-center gap-3">
         <a href="https://instagram.com/anshyadav_skp" target="_blank"
            class="text-xl hover:text-emerald-400 transition hidden sm:block">
           <i class="fab fa-instagram"></i>
         </a>
-        <!-- Hamburger (mobile only) -->
         <button id="burger-btn" class="burger md:hidden flex flex-col gap-[5px] p-1" aria-label="Toggle menu">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
-
-    <!-- Mobile dropdown -->
     <div id="mobile-menu">
       <a href="#about"    onclick="closeMobile()">About</a>
       <a href="#work"     onclick="closeMobile()">Work</a>
@@ -215,25 +366,19 @@
   <!-- ===== HERO ===== -->
   <section class="hero-bg min-h-screen flex items-center pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-5 text-center w-full">
-
       <div class="mb-6 inline-flex items-center gap-2 bg-zinc-900 border border-emerald-500/30 px-5 py-2 rounded-3xl text-xs sm:text-sm">
         <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></span>
         Available for freelance work
       </div>
-
       <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter mb-4 leading-tight">
         Hi, I'm <span class="text-emerald-400">Anshu Yadav</span>
       </h1>
-
       <p class="text-emerald-400 text-lg sm:text-2xl mb-5">Founder @ Codeviaa</p>
-
-      <!-- Typing animation: wraps on mobile, animates on desktop -->
       <div class="typing-wrap max-w-2xl mx-auto">
         <span id="tagline" class="typing text-xl sm:text-2xl md:text-3xl text-zinc-400 font-light">
           Crafting fast, beautiful, and meaningful digital experiences
         </span>
       </div>
-
       <div class="mt-10 flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
         <a href="#projects"
            class="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-black font-semibold rounded-2xl flex items-center justify-center gap-3 transition-all hover:scale-105 text-base">
@@ -244,11 +389,10 @@
           Let's Talk
         </a>
       </div>
-
       <div class="mt-14 flex justify-center gap-8 text-2xl">
         <a href="https://github.com/anshh_1014" target="_blank" class="hover:text-emerald-400 transition"><i class="fab fa-github"></i></a>
         <a href="https://linkedin.com/in/yourprofile" target="_blank" class="hover:text-emerald-400 transition"><i class="fab fa-linkedin"></i></a>
-        <a href="https://instagram.com/anshyadav_skp"  target="_blank" class="hover:text-emerald-400 transition"><i class="fab fa-instagram"></i></a>
+        <a href="https://instagram.com/anshyadav_skp" target="_blank" class="hover:text-emerald-400 transition"><i class="fab fa-instagram"></i></a>
       </div>
     </div>
   </section>
@@ -296,17 +440,171 @@
   </section>
 
   <!-- ===== CONTACT ===== -->
-  <section id="contact" class="py-20 bg-emerald-950">
-    <div class="max-w-2xl mx-auto px-5 text-center">
-      <h2 class="text-3xl sm:text-5xl font-bold mb-5">Let's Work Together</h2>
-      <p class="text-base sm:text-xl text-emerald-200 mb-10">Have a project in mind? Feel free to reach out.</p>
+  <section id="contact" class="py-24 bg-zinc-950 relative overflow-hidden">
 
-      <a href="mailto:yadavanshu001g@gmail.com"
-         class="inline-block px-8 sm:px-12 py-4 sm:py-6 bg-white text-black font-semibold text-lg sm:text-xl rounded-3xl hover:bg-emerald-400 transition-all hover:scale-105">
-        Send me an email →
-      </a>
+    <!-- Background glow -->
+    <div style="position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(16,185,129,0.08) 0%,transparent 70%);pointer-events:none;"></div>
 
-      <div class="mt-14 text-xs sm:text-sm opacity-70">
+    <div class="max-w-6xl mx-auto px-5 relative z-10">
+
+      <!-- Header -->
+      <div class="text-center mb-14">
+        <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full text-emerald-400 text-sm font-medium mb-5">
+          <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+          Open to new projects
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-bold mb-4">Get In Touch</h2>
+        <p class="text-zinc-400 text-base sm:text-lg max-w-xl mx-auto">
+          Have a project in mind or just want to say hello? Fill the form and I'll get back to you within 24 hours.
+        </p>
+      </div>
+
+      <!-- Two-column layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+
+        <!-- LEFT: Info cards -->
+        <div class="lg:col-span-2 space-y-5">
+
+          <div class="contact-card">
+            <h3 class="text-lg font-semibold mb-4 text-white">Contact Info</h3>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
+              <div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">Email</div>
+                <a href="mailto:yadavanshu001g@gmail.com" class="hover:text-emerald-400 transition" style="word-break:break-all;">yadavanshu001g@gmail.com</a>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">Location</div>
+                Kanpur, India
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="fas fa-clock"></i></div>
+              <div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">Response Time</div>
+                Within 24 hours
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <h3 class="text-base font-semibold mb-4 text-white">Find me on</h3>
+            <div class="flex gap-3 flex-wrap">
+              <a href="https://github.com/anshh_1014" target="_blank"
+                 class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                 style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);"
+                 onmouseover="this.style.borderColor='#10b981';this.style.color='#10b981';"
+                 onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)';">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <a href="https://linkedin.com/in/yourprofile" target="_blank"
+                 class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                 style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);"
+                 onmouseover="this.style.borderColor='#10b981';this.style.color='#10b981';"
+                 onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)';">
+                <i class="fab fa-linkedin"></i> LinkedIn
+              </a>
+              <a href="https://instagram.com/anshyadav_skp" target="_blank"
+                 class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                 style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);"
+                 onmouseover="this.style.borderColor='#10b981';this.style.color='#10b981';"
+                 onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)';">
+                <i class="fab fa-instagram"></i> Instagram
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Contact Form -->
+        <div class="lg:col-span-3">
+          <div class="contact-card" style="padding: 36px;">
+
+            <!-- Success message -->
+            <div id="success-msg" class="success-msg mb-6">
+              <i class="fas fa-check-circle mr-2"></i>
+              Message sent! I'll get back to you within 24 hours. 🎉
+            </div>
+
+            <!-- Error message -->
+            <div id="error-msg" class="error-msg mb-6">
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Something went wrong. Please try again or email me directly.
+            </div>
+
+            <div id="contact-form-wrap">
+              <!-- Name + Email row -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                <div>
+                  <label class="input-label" for="contact-name">Your Name</label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    class="contact-input"
+                    placeholder="Anshu Yadav"
+                    maxlength="80"
+                    autocomplete="name"
+                  />
+                </div>
+                <div>
+                  <label class="input-label" for="contact-email">Email Address</label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    class="contact-input"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                  />
+                </div>
+              </div>
+
+              <!-- Subject -->
+              <div class="mb-5">
+                <label class="input-label" for="contact-subject">Subject</label>
+                <input
+                  id="contact-subject"
+                  type="text"
+                  class="contact-input"
+                  placeholder="Project inquiry, collaboration, or just a hello..."
+                  maxlength="120"
+                />
+              </div>
+
+              <!-- Message -->
+              <div class="mb-6">
+                <label class="input-label" for="contact-message">Message</label>
+                <textarea
+                  id="contact-message"
+                  class="contact-input"
+                  rows="6"
+                  placeholder="Tell me about your project, idea, or anything you'd like to discuss..."
+                  maxlength="1000"
+                  oninput="updateCharCount(this)"
+                ></textarea>
+                <div class="char-count" id="char-count">0 / 1000</div>
+              </div>
+
+              <!-- Submit button -->
+              <button id="send-btn" class="send-btn" onclick="submitForm()">
+                <div class="spinner" id="btn-spinner"></div>
+                <i class="fas fa-paper-plane" id="btn-icon"></i>
+                <span id="btn-text">Send Message</span>
+              </button>
+
+              <p class="text-center mt-4 text-xs text-zinc-600">
+                Your data is safe. I never share your information with anyone.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-16 text-center text-xs sm:text-sm opacity-50">
         © 2026 Anshu Yadav • Codeviaa • Built with HTML, CSS & JavaScript
       </div>
     </div>
@@ -427,6 +725,101 @@
         container.appendChild(pill);
       });
     }
+
+    /* ---------- CHAR COUNT ---------- */
+    function updateCharCount(el) {
+      const count = el.value.length;
+      const max   = parseInt(el.getAttribute('maxlength'));
+      const el2   = document.getElementById('char-count');
+      el2.textContent = count + ' / ' + max;
+      el2.className = 'char-count' + (count >= max ? ' at-limit' : count >= max * 0.85 ? ' near-limit' : '');
+    }
+
+    /* ---------- CONTACT FORM SUBMIT ---------- */
+    async function submitForm() {
+      const name    = document.getElementById('contact-name').value.trim();
+      const email   = document.getElementById('contact-email').value.trim();
+      const subject = document.getElementById('contact-subject').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+
+      // Basic validation
+      if (!name || !email || !message) {
+        shake(document.getElementById('send-btn'));
+        if (!name)    highlight(document.getElementById('contact-name'));
+        if (!email)   highlight(document.getElementById('contact-email'));
+        if (!message) highlight(document.getElementById('contact-message'));
+        return;
+      }
+
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(email)) {
+        highlight(document.getElementById('contact-email'));
+        shake(document.getElementById('send-btn'));
+        return;
+      }
+
+      // Loading state
+      const btn     = document.getElementById('send-btn');
+      const spinner = document.getElementById('btn-spinner');
+      const icon    = document.getElementById('btn-icon');
+      const text    = document.getElementById('btn-text');
+
+      btn.disabled = true;
+      spinner.style.display = 'block';
+      icon.style.display    = 'none';
+      text.textContent      = 'Sending...';
+
+      try {
+        // ⬇️ REPLACE 'YOUR_FORMSPREE_ID' with your actual Formspree form ID
+        const res = await fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message })
+        });
+
+        if (res.ok) {
+          document.getElementById('contact-form-wrap').style.display = 'none';
+          document.getElementById('success-msg').style.display = 'block';
+        } else {
+          throw new Error('Server error');
+        }
+      } catch (err) {
+        document.getElementById('error-msg').style.display = 'block';
+        setTimeout(() => { document.getElementById('error-msg').style.display = 'none'; }, 5000);
+        btn.disabled = false;
+        spinner.style.display = 'none';
+        icon.style.display    = 'inline-block';
+        text.textContent      = 'Send Message';
+      }
+    }
+
+    function highlight(el) {
+      el.style.borderColor = '#ef4444';
+      el.style.boxShadow   = '0 0 0 4px rgba(239,68,68,0.15)';
+      el.focus();
+      el.addEventListener('input', () => {
+        el.style.borderColor = '';
+        el.style.boxShadow   = '';
+      }, { once: true });
+    }
+
+    function shake(el) {
+      el.style.animation = 'none';
+      el.offsetHeight; // reflow
+      el.style.animation = 'shake 0.4s ease';
+    }
+
+    const shakeStyle = document.createElement('style');
+    shakeStyle.textContent = `
+      @keyframes shake {
+        0%,100% { transform: translateX(0); }
+        20%      { transform: translateX(-6px); }
+        40%      { transform: translateX(6px); }
+        60%      { transform: translateX(-4px); }
+        80%      { transform: translateX(4px); }
+      }
+    `;
+    document.head.appendChild(shakeStyle);
 
     /* ---------- SCROLL PROGRESS ---------- */
     window.addEventListener('scroll', () => {
